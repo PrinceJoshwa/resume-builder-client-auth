@@ -1,6 +1,14 @@
 import { FaUser } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
 function Dashboard() {
+    const router = useRouter();
+
+    const navigateToTemplate = (template) => {
+      if (template === 'professional') {
+        router.push('/template1');
+      }
+    };
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Sidebar */}
@@ -43,8 +51,9 @@ function Dashboard() {
         
         <div className="grid grid-cols-3 gap-6">
           {/* Professional Template */}
-          <div className="bg-white p-4 rounded-lg shadow">
-            <img src="/template1.png" alt="Professional Template" className="w-[400px] h-[400px] object-contain object-center mb-4" />
+          <div className="bg-white p-4 rounded-lg shadow"  onClick={() => navigateToTemplate('professional')}
+          >
+            <img src="/template1.png" alt="Professional Template" className="w-[400px] h-[400px] object-contain object-center mb-4"/>
             <h3 className="text-lg font-semibold">Professional</h3>
             <p className="text-gray-600">Clean and professional template for corporate roles</p>
           </div>
