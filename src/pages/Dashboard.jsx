@@ -60,7 +60,7 @@ function Dashboard() {
 
           {/* Creative Template */}
           <div className="bg-white p-4 rounded-lg shadow">
-            <img src="/template2.png" alt="Creative Template" className="w-[400px] h-[400px] object-contain object-center" />
+            <img src="/template2.png" alt="Creative Template" className="w-[400px] h-[400px] object-contain object-center mb-4" />
             <h3 className="text-lg font-semibold">Creative</h3>
             <p className="text-gray-600">Modern and creative template for design roles</p>
           </div>
