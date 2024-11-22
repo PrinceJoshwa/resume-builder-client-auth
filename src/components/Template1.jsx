@@ -373,7 +373,7 @@ export default function Template1() {
 
             <button
               onClick={downloadPDF}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-blue-700 flex items-center gap-2"
+              className="bg-blue-600 text-white px-6 py-1.5 rounded-lg shadow-lg hover:bg-blue-700 flex items-center gap-2"
             >
               <Download className="h-5 w-5" />
               Download PDF
