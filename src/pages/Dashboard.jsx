@@ -67,7 +67,7 @@ function Dashboard() {
 
           {/* Simple Template */}
           <div className="bg-white p-4 rounded-lg shadow">
-            <img src="/template3.png" alt="Simple Template" className="w-[40px] h-[400px] object-contain object-center" />
+            <img src="/template3.png" alt="Simple Template" className="w-[400px] h-[400px] object-contain object-center" />
             <h3 className="text-lg font-semibold">Simple</h3>
             <p className="text-gray-600">Minimalist template focusing on experience</p>
           </div>
