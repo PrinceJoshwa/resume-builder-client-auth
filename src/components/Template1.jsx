@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Phone, Mail, MapPin, Download, Save } from 'lucide-react'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
+import SaveResumeModal from './SaveResumeModal'
 
 export default function Template1() {
   const [formData, setFormData] = useState({
@@ -56,10 +57,29 @@ export default function Template1() {
     }))
   }
 
-  const saveResume = async () => {
-    // Implement save functionality here
-    console.log('Saving resume:', formData)
-  }
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const saveResume = async (resumeName) => {
+    try {
+      const response = await fetch('/api/resumes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: resumeName, data: formData }),
+      });
+
+      if (response.ok) {
+        console.log('Resume saved successfully');
+        // You can add a success notification here
+      } else {
+        console.error('Failed to save resume');
+        // You can add an error notification here
+      }
+    } catch (error) {
+      console.error('Error saving resume:', error);
+      // You can add an error notification here
+    }
+  };
 
   const downloadPDF = async () => {
     const element = document.getElementById('resume-preview')
@@ -363,13 +383,13 @@ export default function Template1() {
           </div>
 
           <div className="mt-8 flex justify-center space-x-4">
-            <button
-              onClick={saveResume}
-              className="bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-green-700 flex items-center gap-2"
-            >
-              <Save className="h-5 w-5" />
-              Save Resume
-            </button>
+
+          <button
+            onClick={() => setIsSaveModalOpen(true)}
+            className="bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-green-700 flex items-center gap-2">
+            <Save className="h-5 w-5" />
+             Save Resume
+          </button>
 
             <button
               onClick={downloadPDF}
@@ -379,6 +399,10 @@ export default function Template1() {
               Download PDF
             </button>
           </div>
+        <SaveResumeModal
+        isOpen={isSaveModalOpen}
+        onClose={() => setIsSaveModalOpen(false)}
+        onSave={saveResume}/>
         </div>
       </div>
     </div>
