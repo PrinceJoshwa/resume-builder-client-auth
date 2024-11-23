@@ -3,6 +3,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Template1 from './components/Template1';
+import SaveResume from './components/SaveResumeModal';
 
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '352112236-q2che8r2qdoscgovbi09vkc7oglgkj8a.apps.googleusercontent.com';
 
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/template1" element={<Template1 />} />
+          <Route path="/myresume" element={<SaveResume />} />
         </Routes>
       </BrowserRouter>
     </GoogleOAuthProvider>
