@@ -180,21 +180,22 @@ export const getResumes = async (token) => {
 };
 
 // Updated googleAuth to send id_token
-export const googleAuth = async (idToken) => {
-  try {
-    const response = await fetch(`${API_URL}/users/google`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id_token: idToken }), // Changed to id_token
-      credentials: 'include',
-    });
-    
-    return handleResponse(response);
-  } catch (error) {
-    console.error('Google authentication error:', error);
-    throw error;
-  }
-};
+export const googleAuth = async (accessToken) => {
+    try {
+      console.log('Sending accessToken to server:', accessToken); // Add this log
+      const response = await fetch(`${API_URL}/users/google`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ access_token: accessToken }),
+        credentials: 'include',
+      });
+      
+      return handleResponse(response);
+    } catch (error) {
+      console.error('Google authentication error:', error);
+      throw error;
+    }
+  };
 

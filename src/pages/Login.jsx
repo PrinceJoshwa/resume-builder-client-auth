@@ -300,12 +300,12 @@ function Login() {
     }
   }, [navigate]);
 
-  const handleGoogleLogin = async (response) => {
+  const handleGoogleLogin = async (tokenResponse) => {
     setIsLoading(true);
     setError('');
     try {
-      // Pass id_token to backend
-      const userData = await googleAuth(response.id_token); 
+      console.log('Google tokenResponse:', tokenResponse); // Add this log
+      const userData = await googleAuth(tokenResponse.access_token);
       
       if (userData && userData.token) {
         localStorage.setItem('userToken', userData.token);
@@ -333,7 +333,6 @@ function Login() {
       console.error('Google Login Failed:', error);
       setError('Google login failed. Please try again.');
     },
-    scope: 'openid email profile', // Ensure correct scopes for id_token
   });
 
   return (
