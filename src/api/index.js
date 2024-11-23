@@ -70,6 +70,70 @@
 // };
 
 // client/src/api/index.js
+// const API_URL = import.meta.env.VITE_API_URL || 'https://resume-builder-server-auth.vercel.app/api';
+
+// const handleResponse = async (response) => {
+//   if (!response.ok) {
+//     const errorData = await response.json().catch(() => ({}));
+//     throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+//   }
+//   return response.json();
+// };
+
+// export const saveResume = async (resumeData, token) => {
+//   try {
+//     const response = await fetch(`${API_URL}/resumes`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization': `Bearer ${token}`
+//       },
+//       body: JSON.stringify(resumeData),
+//       credentials: 'include'
+//     });
+    
+//     return handleResponse(response);
+//   } catch (error) {
+//     console.error('Error saving resume:', error);
+//     throw error;
+//   }
+// };
+
+// export const getResumes = async (token) => {
+//   try {
+//     const response = await fetch(`${API_URL}/resumes`, {
+//       headers: {
+//         'Authorization': `Bearer ${token}`
+//       },
+//       credentials: 'include'
+//     });
+    
+//     return handleResponse(response);
+//   } catch (error) {
+//     console.error('Error fetching resumes:', error);
+//     throw error;
+//   }
+// };
+
+// export const googleAuth = async (token) => {
+//   try {
+//     const response = await fetch(`${API_URL}/users/google`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify({ token }),
+//       credentials: 'include'
+//     });
+    
+//     return handleResponse(response);
+//   } catch (error) {
+//     console.error('Google authentication error:', error);
+//     throw error;
+//   }
+// };
+
+//GPT
 const API_URL = import.meta.env.VITE_API_URL || 'https://resume-builder-server-auth.vercel.app/api';
 
 const handleResponse = async (response) => {
@@ -80,50 +144,16 @@ const handleResponse = async (response) => {
   return response.json();
 };
 
-export const saveResume = async (resumeData, token) => {
-  try {
-    const response = await fetch(`${API_URL}/resumes`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(resumeData),
-      credentials: 'include'
-    });
-    
-    return handleResponse(response);
-  } catch (error) {
-    console.error('Error saving resume:', error);
-    throw error;
-  }
-};
-
-export const getResumes = async (token) => {
-  try {
-    const response = await fetch(`${API_URL}/resumes`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
-      credentials: 'include'
-    });
-    
-    return handleResponse(response);
-  } catch (error) {
-    console.error('Error fetching resumes:', error);
-    throw error;
-  }
-};
-
-export const googleAuth = async (token) => {
+// Updated googleAuth to send id_token
+export const googleAuth = async (idToken) => {
   try {
     const response = await fetch(`${API_URL}/users/google`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ token }),
-      credentials: 'include'
+      body: JSON.stringify({ id_token: idToken }), // Changed to id_token
+      credentials: 'include',
     });
     
     return handleResponse(response);

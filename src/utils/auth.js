@@ -1,3 +1,5 @@
+//client/src/utils/auth.js
+
 // Utility function to check if user is logged in
 export const isAuthenticated = () => {
     const token = localStorage.getItem('userToken');
