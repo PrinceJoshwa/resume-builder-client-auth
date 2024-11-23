@@ -144,6 +144,41 @@ const handleResponse = async (response) => {
   return response.json();
 };
 
+export const saveResume = async (resumeData, token) => {
+  try {
+    const response = await fetch(`${API_URL}/resumes`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(resumeData),
+      credentials: 'include'
+    });
+    
+    return handleResponse(response);
+  } catch (error) {
+    console.error('Error saving resume:', error);
+    throw error;
+  }
+};
+
+export const getResumes = async (token) => {
+  try {
+    const response = await fetch(`${API_URL}/resumes`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      credentials: 'include'
+    });
+    
+    return handleResponse(response);
+  } catch (error) {
+    console.error('Error fetching resumes:', error);
+    throw error;
+  }
+};
+
 // Updated googleAuth to send id_token
 export const googleAuth = async (idToken) => {
   try {
@@ -162,3 +197,4 @@ export const googleAuth = async (idToken) => {
     throw error;
   }
 };
+
