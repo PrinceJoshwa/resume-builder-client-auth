@@ -183,7 +183,7 @@ function Login() {
     setIsLoading(true);
     setError('');
     try {
-      const userData = await googleAuth(response.access_token);
+      const userData = await googleAuth(response.id_token);
       
       if (userData && userData.token) {
         localStorage.setItem('userToken', userData.token);
