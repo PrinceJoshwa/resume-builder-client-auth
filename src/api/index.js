@@ -1,4 +1,3 @@
-//23-11-24
 const API_URL = import.meta.env.VITE_API_URL || 'https://resume-builder-server-auth.vercel.app/api';
 
 export const saveResume = async (resumeData, token) => {
@@ -14,13 +13,14 @@ export const saveResume = async (resumeData, token) => {
     });
     
     if (!response.ok) {
-      throw new Error('Failed to save resume');
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to save resume');
     }
     
     return await response.json();
   } catch (error) {
     console.error('Error:', error);
-    throw new Error('Failed to save resume');
+    throw error;
   }
 };
 
@@ -34,13 +34,14 @@ export const getResumes = async (token) => {
     });
     
     if (!response.ok) {
-      throw new Error('Failed to fetch resumes');
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to fetch resumes');
     }
     
     return await response.json();
   } catch (error) {
     console.error('Error:', error);
-    throw new Error('Failed to fetch resumes');
+    throw error;
   }
 };
 
@@ -56,12 +57,13 @@ export const googleAuth = async (token) => {
     });
     
     if (!response.ok) {
-      throw new Error('Google authentication failed');
+      const error = await response.json();
+      throw new Error(error.message || 'Google authentication failed');
     }
     
     return await response.json();
   } catch (error) {
     console.error('Error:', error);
-    throw new Error('Google authentication failed');
+    throw error;
   }
 };

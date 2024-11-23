@@ -84,23 +84,25 @@ function Login() {
   const login = useGoogleLogin({
     onSuccess: async (response) => {
       try {
-        // Send Google token to our backend
         const userData = await googleAuth(response.access_token);
         
-        // Store the JWT token from our backend
-        localStorage.setItem('userToken', userData.token);
-        localStorage.setItem('userData', JSON.stringify({
-          id: userData._id,
-          name: userData.name,
-          email: userData.email
-        }));
-        
-        navigate('/dashboard');
+        if (userData && userData.token) {
+          localStorage.setItem('userToken', userData.token);
+          localStorage.setItem('userData', JSON.stringify({
+            id: userData._id,
+            name: userData.name,
+            email: userData.email
+          }));
+          
+          navigate('/dashboard');
+        } else {
+          console.error('Invalid response from server');
+        }
       } catch (error) {
         console.error('Login failed:', error);
       }
     },
-    onError: () => console.log('Login Failed')
+    onError: (error) => console.error('Login Failed:', error)
   });
 
   return (
