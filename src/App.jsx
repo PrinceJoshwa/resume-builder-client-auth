@@ -41,6 +41,7 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/template1" element={<Template1 />} />
+        <Route path="/myresume" element={<SaveResume />} />
       </Routes>
     </Router>
    </GoogleOAuthProvider>
