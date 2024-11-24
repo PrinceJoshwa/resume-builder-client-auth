@@ -283,16 +283,15 @@
 // export default Login;
 
 //GPT
-import React, { useEffect, useState } from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { googleAuth } from '../api';
 import { isAuthenticated } from '../utils/auth';
+import { useEffect, useState } from 'react';
 
 function Login() {
   const navigate = useNavigate();
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated()) {
@@ -300,66 +299,53 @@ function Login() {
     }
   }, [navigate]);
 
-  const handleGoogleLogin = async (tokenResponse) => {
-    setIsLoading(true);
-    setError('');
-    try {
-      console.log('Google tokenResponse:', tokenResponse); // Add this log
-      const userData = await googleAuth(tokenResponse.access_token);
-      
-      if (userData && userData.token) {
-        localStorage.setItem('userToken', userData.token);
-        localStorage.setItem('userData', JSON.stringify({
-          id: userData._id,
-          name: userData.name,
-          email: userData.email,
-        }));
-        
-        navigate('/dashboard');
-      } else {
-        throw new Error('Invalid response from server');
-      }
-    } catch (error) {
-      console.error('Login failed:', error);
-      setError('Login failed. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const login = useGoogleLogin({
-    onSuccess: handleGoogleLogin,
-    onError: (error) => {
-      console.error('Google Login Failed:', error);
-      setError('Google login failed. Please try again.');
+    onSuccess: async (response) => {
+      try {
+        setError('');
+        const userData = await googleAuth(response.access_token);
+        
+        if (userData && userData.token) {
+          localStorage.setItem('userToken', userData.token);
+          localStorage.setItem('userData', JSON.stringify({
+            id: userData._id,
+            name: userData.name,
+            email: userData.email
+          }));
+          
+          navigate('/dashboard');
+        } else {
+          setError('Invalid response from server');
+        }
+      } catch (error) {
+        console.error('Login failed:', error);
+        setError(error.message || 'Login failed. Please try again.');
+      }
     },
+    onError: (error) => {
+      console.error('Login Failed:', error);
+      setError('Google login failed. Please try again.');
+    }
   });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
         
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <span className="block sm:inline">{error}</span>
+          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-sm">
+            {error}
           </div>
         )}
         
         <div className="space-y-4">
           <button
             onClick={() => login()}
-            disabled={isLoading}
-            className="w-full border border-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full border border-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
           >
-            {isLoading ? (
-              <span>Loading...</span>
-            ) : (
-              <>
-                <img src="https://www.google.com/favicon.ico" className="w-4 h-4" alt="Google" />
-                Login with Google
-              </>
-            )}
+            <img src="https://www.google.com/favicon.ico" className="w-4 h-4" alt="Google" />
+            Login with Google
           </button>
         </div>
       </div>
