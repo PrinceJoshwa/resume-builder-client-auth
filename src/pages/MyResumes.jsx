@@ -337,7 +337,7 @@
 //25-11-2024
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { Eye, Download, Trash2 } from 'lucide-react';
+import { Eye, Download, Trash2 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { getResumes, deleteResume } from '../api';
