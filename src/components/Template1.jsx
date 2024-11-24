@@ -412,7 +412,7 @@
 //23-11-2024
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Phone, Mail, MapPin, Download, Save } from 'lucide-react'
 import html2canvas from 'html2canvas'
