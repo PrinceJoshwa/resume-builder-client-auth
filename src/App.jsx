@@ -30,7 +30,6 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Template1 from './components/Template1';
 import SaveResume from './components/SaveResumeModal';
-import Template1Page from './pages/Template1';
 
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '352112236-q2che8r2qdoscgovbi09vkc7oglgkj8a.apps.googleusercontent.com';
 
@@ -41,7 +40,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/template1" element={<Template1Page />} />
+        <Route path="/template1" element={<Template1 />} />
       </Routes>
     </Router>
    </GoogleOAuthProvider>
