@@ -51,6 +51,7 @@ function SaveResumeModal({ isOpen, onClose, onSave }) {
     e.preventDefault();
     onSave(resumeName);
     setResumeName('');
+    onClose();
   };
 
   if (!isOpen) return null;
