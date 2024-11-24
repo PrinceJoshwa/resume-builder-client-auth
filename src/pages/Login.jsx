@@ -373,7 +373,7 @@ function Login() {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      navigate('/dashboard');
+      navigate('/');
     }
   }, [navigate]);
 
@@ -396,7 +396,7 @@ function Login() {
           email: userData.email
         }));
         
-        navigate('/dashboard');
+        navigate('/');
       } else {
         throw new Error('Invalid response from server');
       }

@@ -38,7 +38,7 @@ function App() {
    <GoogleOAuthProvider clientId={googleClientId}>
     <Router>
       <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/template1" element={<Template1 />} />
         <Route path="/myresume" element={<MyResumes />} />
