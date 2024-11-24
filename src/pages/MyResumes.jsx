@@ -334,6 +334,7 @@
 
 // export default MyResumes;
 
+//25-11-2024
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, Download, Trash2 } from 'lucide-react';
@@ -350,6 +351,7 @@ function MyResumes() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedResume, setSelectedResume] = useState(null);
+  const [downloadingId, setDownloadingId] = useState(null);
 
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -391,23 +393,39 @@ function MyResumes() {
 
   const handleDownloadPDF = async (resume) => {
     try {
+      setDownloadingId(resume._id);
       const element = document.getElementById(`resume-${resume._id}`);
-      if (!element) return;
+      if (!element) {
+        throw new Error('Resume element not found');
+      }
+
+      // Set specific styles for PDF generation
+      const originalStyle = element.style.cssText;
+      element.style.width = '210mm';
+      element.style.minHeight = '297mm';
+      element.style.margin = '0';
+      element.style.padding = '20mm';
+      element.style.backgroundColor = 'white';
+      element.style.boxSizing = 'border-box';
 
       const scale = 2;
       const canvas = await html2canvas(element, {
         scale: scale,
         useCORS: true,
         logging: false,
-        windowWidth: element.scrollWidth * scale,
-        windowHeight: element.scrollHeight * scale
+        backgroundColor: '#ffffff',
+        windowWidth: 794, // A4 width in pixels at 96 DPI
+        windowHeight: 1123, // A4 height in pixels at 96 DPI
       });
+
+      // Restore original styles
+      element.style.cssText = originalStyle;
 
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
-        format: 'a4'
+        format: 'a4',
       });
 
       const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -415,15 +433,17 @@ function MyResumes() {
       const imgWidth = canvas.width / scale;
       const imgHeight = canvas.height / scale;
       const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-      
+
       const centerX = (pdfWidth - imgWidth * ratio) / 2;
-      const centerY = (pdfHeight - imgHeight * ratio) / 2;
+      const centerY = 0; // Align to top
 
       pdf.addImage(imgData, 'PNG', centerX, centerY, imgWidth * ratio, imgHeight * ratio);
       pdf.save(`${resume.name || 'resume'}.pdf`);
     } catch (err) {
       console.error('Error generating PDF:', err);
       alert('Failed to download PDF. Please try again.');
+    } finally {
+      setDownloadingId(null);
     }
   };
 
@@ -483,6 +503,7 @@ function MyResumes() {
                 onView={() => handleViewResume(resume)}
                 onDownload={() => handleDownloadPDF(resume)}
                 onDelete={() => handleDeleteResume(resume._id)}
+                isDownloading={downloadingId === resume._id}
               />
             ))}
           </div>

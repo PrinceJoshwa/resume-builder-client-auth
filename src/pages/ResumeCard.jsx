@@ -1,6 +1,6 @@
-import { Eye, Download, Trash2 } from 'lucide-react';
+import { Eye, Download, Trash2, Loader2 } from 'lucide-react';
 
-function ResumeCard({ resume, onView, onDownload, onDelete }) {
+function ResumeCard({ resume, onView, onDownload, onDelete, isDownloading }) {
   return (
     <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
       <div className="p-6 border-b">
@@ -39,10 +39,15 @@ function ResumeCard({ resume, onView, onDownload, onDelete }) {
         </button>
         <button
           onClick={onDownload}
-          className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
+          disabled={isDownloading}
+          className="p-2 text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50"
           title="Download PDF"
         >
-          <Download size={20} />
+          {isDownloading ? (
+            <Loader2 size={20} className="animate-spin" />
+          ) : (
+            <Download size={20} />
+          )}
         </button>
         <button
           onClick={onDelete}
