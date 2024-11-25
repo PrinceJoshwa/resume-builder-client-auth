@@ -473,70 +473,81 @@
 // }
 
 
-
-
-
-
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Phone, Mail, Linkedin, Github, MapPin, Briefcase, GraduationCap, Award, FolderOpen, Languages, Download, Save } from 'lucide-react';
+import { 
+  Phone, 
+  Mail, 
+  Linkedin, 
+  Github, 
+  MapPin, 
+  Briefcase, 
+  GraduationCap, 
+  Award, 
+  FolderOpen, 
+  Languages, 
+  Download, 
+  Save 
+} from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { saveResume } from '../api';
 import { isAuthenticated, getToken } from '../utils/auth';
 import SaveResumeModal from './SaveResumeModal';
 
+const initialFormData = {
+  personalInfo: {
+    name: '',
+    title: '',
+    email: '',
+    phone: '',
+    location: '',
+    linkedin: '',
+    github: ''
+  },
+  summary: '',
+  skills: [''],
+  experience: [{
+    title: '',
+    company: '',
+    startDate: '',
+    endDate: '',
+    description: '',
+    points: ['']
+  }],
+  education: [{
+    degree: '',
+    school: '',
+    startDate: '',
+    endDate: '',
+    score: ''
+  }],
+  projects: [{
+    name: '',
+    description: '',
+    points: ['']
+  }],
+  certifications: [{
+    name: '',
+    issuer: '',
+    date: ''
+  }],
+  internships: [{
+    company: '',
+    duration: '',
+    description: ''
+  }],
+  languages: [{
+    name: '',
+    proficiency: ''
+  }]
+};
+
 function Template1() {
   const navigate = useNavigate();
   const resumeRef = useRef(null);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    personalInfo: {
-      name: '',
-      title: '',
-      email: '',
-      phone: '',
-      location: '',
-      linkedin: '',
-      github: ''
-    },
-    summary: '',
-    skills: [''],
-    experience: [{
-      title: '',
-      company: '',
-      startDate: '',
-      endDate: '',
-      description: '',
-      points: ['']
-    }],
-    education: [{
-      degree: '',
-      school: '',
-      startDate: '',
-      endDate: '',
-      score: ''
-    }],
-    projects: [{
-      name: '',
-      description: '',
-      points: ['']
-    }],
-    certifications: [{
-      name: '',
-      issuer: '',
-      date: ''
-    }],
-    internships: [{
-      company: '',
-      duration: '',
-      description: ''
-    }],
-    languages: [{
-      name: '',
-      proficiency: ''
-    }]
-  });
+  const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -544,30 +555,15 @@ function Template1() {
     }
   }, [navigate]);
 
-  const handleSaveResume = async (resumeName) => {
-    try {
-      const token = getToken();
-      if (!token) {
-        throw new Error('Please login to save resume');
-      }
-
-      await saveResume({
-        name: resumeName,
-        data: formData
-      }, token);
-
-      navigate('/myresume');
-    } catch (error) {
-      console.error('Error saving resume:', error);
-      alert('Failed to save resume. Please try again.');
-    }
-  };
-
   const handleInputChange = (section, index, field, value) => {
     setFormData(prev => {
       const newData = { ...prev };
       if (section === 'personalInfo') {
         newData.personalInfo[field] = value;
+      } else if (section === 'skills') {
+        const newSkills = [...newData.skills];
+        newSkills[index] = value;
+        newData.skills = newSkills;
       } else if (Array.isArray(newData[section])) {
         if (field.includes('.')) {
           const [mainField, subField] = field.split('.');
@@ -620,6 +616,25 @@ function Template1() {
     });
   };
 
+  const handleSaveResume = async (resumeName) => {
+    try {
+      const token = getToken();
+      if (!token) {
+        throw new Error('Please login to save resume');
+      }
+
+      await saveResume({
+        name: resumeName,
+        data: formData
+      }, token);
+
+      navigate('/myresume');
+    } catch (error) {
+      console.error('Error saving resume:', error);
+      alert('Failed to save resume. Please try again.');
+    }
+  };
+
   const downloadPDF = async () => {
     try {
       const element = resumeRef.current;
@@ -636,19 +651,19 @@ function Template1() {
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
-        format: 'a4'
+        format: 'a4',
+        compress: true
       });
 
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = canvas.width / 2;
-      const imgHeight = canvas.height / 2;
+      const pdfWidth = 210;
+      const pdfHeight = 297;
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
       const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const x = (pdfWidth - imgWidth * ratio) / 2;
+      const y = 0;
 
-      const centerX = (pdfWidth - imgWidth * ratio) / 2;
-      const centerY = 0;
-
-      pdf.addImage(imgData, 'PNG', centerX, centerY, imgWidth * ratio, imgHeight * ratio);
+      pdf.addImage(imgData, 'PNG', x, y, imgWidth * ratio, imgHeight * ratio, '', 'FAST');
       pdf.save('resume.pdf');
     } catch (error) {
       console.error('Error generating PDF:', error);
@@ -739,7 +754,7 @@ function Template1() {
                   type="text"
                   placeholder="Skill"
                   value={skill}
-                  onChange={(e) => handleInputChange('skills', null, e.target.value)}
+                  onChange={(e) => handleInputChange('skills', index, null, e.target.value)}
                   className="border p-2 rounded flex-1"
                 />
                 <button
@@ -793,14 +808,12 @@ function Template1() {
                     className="border p-2 rounded"
                   />
                 </div>
-                <div className="mb-4">
-                  <textarea
-                    placeholder="Job Description"
-                    value={exp.description}
-                    onChange={(e) => handleInputChange('experience', index, 'description', e.target.value)}
-                    className="border p-2 rounded w-full h-24"
-                  />
-                </div>
+                <textarea
+                  placeholder="Job Description"
+                  value={exp.description}
+                  onChange={(e) => handleInputChange('experience', index, 'description', e.target.value)}
+                  className="border p-2 rounded w-full h-24 mb-4"
+                />
                 {exp.points.map((point, pointIndex) => (
                   <div key={pointIndex} className="flex gap-2 mb-2">
                     <input
@@ -1054,71 +1067,72 @@ function Template1() {
 
         {/* Preview Section */}
         <div className="bg-white p-8 rounded-lg shadow-lg mb-8" ref={resumeRef}>
-          <div className="max-w-[21cm] mx-auto font-sans text-[12px] leading-normal">
+          <div className="max-w-[21cm] mx-auto font-sans text-[11pt] leading-relaxed">
             {/* Header */}
-            <header className="mb-4 pb-4 border-b-2 border-blue-600">
-              <h1 className="text-3xl font-bold text-gray-800">{formData.personalInfo.name}</h1>
-              <h2 className="text-lg text-blue-600">{formData.personalInfo.title}</h2>
-              <div className="flex flex-wrap gap-4 mt-2">
+            <header className="mb-6 pb-6 border-b-2 border-blue-600">
+              <h1 className="text-4xl font-bold text-gray-800 mb-2">{formData.personalInfo.name}</h1>
+              <h2 className="text-xl text-blue-600 mb-4">{formData.personalInfo.title}</h2>
+              <div className="flex flex-wrap gap-4">
                 {formData.personalInfo.phone && (
                   <a href={`tel:${formData.personalInfo.phone}`} className="flex items-center text-gray-600 hover:text-blue-600">
-                    <Phone size={14} className="mr-2" />
+                    <Phone size={16} className="mr-2" />
                     <span>{formData.personalInfo.phone}</span>
                   </a>
                 )}
                 {formData.personalInfo.email && (
                   <a href={`mailto:${formData.personalInfo.email}`} className="flex items-center text-gray-600 hover:text-blue-600">
-                    <Mail size={14} className="mr-2" />
+                    <Mail size={16} className="mr-2" />
                     <span>{formData.personalInfo.email}</span>
                   </a>
                 )}
                 {formData.personalInfo.linkedin && (
-                  <a href={formData.personalInfo.linkedin} className="flex items-center text-gray-600 hover:text-blue-600">
-                    <Linkedin size={14} className="mr-2" />
+                  <a href={formData.personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-600 hover:text-blue-600">
+                    <Linkedin size={16} className="mr-2" />
                     <span>{formData.personalInfo.linkedin.split('/').pop()}</span>
                   </a>
                 )}
                 {formData.personalInfo.github && (
-                  <a href={formData.personalInfo.github} className="flex items-center text-gray-600 hover:text-blue-600">
-                    <Github size={14} className="mr-2" />
+                  <a href={formData.personalInfo.github} target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-600 hover:text-blue-600">
+                    <Github size={16} className="mr-2" />
                     <span>{formData.personalInfo.github.split('/').pop()}</span>
                   </a>
                 )}
                 {formData.personalInfo.location && (
                   <span className="flex items-center text-gray-600">
-                    <MapPin size={14} className="mr-2" />
+                    <MapPin size={16} className="mr-2" />
                     <span>{formData.personalInfo.location}</span>
                   </span>
                 )}
               </div>
             </header>
 
-            <div className="grid grid-cols-2 gap-8">
-              <div>
+            <div className="grid grid-cols-3 gap-6">
+              <div className="col-span-2">
                 {/* Professional Summary */}
                 {formData.summary && (
-                  <section className="mb-4">
-                    <h3 className="text-sm font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-2 flex items-center">
-                      <Briefcase className="mr-2 text-blue-600" size={16} />
+                  <section className="mb-6">
+                    <h3 className="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center">
+                      <Briefcase className="mr-2 text-blue-600" size={18} />
                       PROFESSIONAL SUMMARY
                     </h3>
-                    <p className="text-gray-600">{formData.summary}</p>
+                    <p className="text-gray-700 text-justify">{formData.summary}</p>
                   </section>
                 )}
 
                 {/* Experience */}
                 {formData.experience.length > 0 && formData.experience[0].title && (
-                  <section className="mb-4">
-                    <h3 className="text-sm font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-2 flex items-center">
-                      <Briefcase className="mr-2 text-blue-600" size={16} />
+                  <section className="mb-6">
+                    <h3 className="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center">
+                      <Briefcase className="mr-2 text-blue-600" size={18} />
                       EXPERIENCE
                     </h3>
                     {formData.experience.map((exp, index) => (
                       <div key={index} className="mb-4">
-                        <h4 className="font-semibold">{exp.title} - {exp.company}</h4>
-                        <p className="text-blue-600">{exp.startDate} - {exp.endDate}</p>
-                        <p className="text-gray-600 mb-2">{exp.description}</p>
-                        <ul className="list-disc pl-5 text-gray-600 space-y-1">
+                        <h4 className="font-semibold text-gray-800">{exp.title}</h4>
+                        <div className="text-blue-600 mb-1">{exp.company}</div>
+                        <div className="text-gray-600 text-sm mb-2">{exp.startDate} - {exp.endDate}</div>
+                        <p className="text-gray-700 mb-2">{exp.description}</p>
+                        <ul className="list-disc pl-5 text-gray-700 space-y-1">
                           {exp.points.map((point, pointIndex) => (
                             point && <li key={pointIndex}>{point}</li>
                           ))}
@@ -1130,16 +1144,16 @@ function Template1() {
 
                 {/* Projects */}
                 {formData.projects.length > 0 && formData.projects[0].name && (
-                  <section className="mb-4">
-                    <h3 className="text-sm font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-2 flex items-center">
-                      <FolderOpen className="mr-2 text-blue-600" size={16} />
+                  <section className="mb-6">
+                    <h3 className="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center">
+                      <FolderOpen className="mr-2 text-blue-600" size={18} />
                       PROJECTS
                     </h3>
                     {formData.projects.map((project, index) => (
                       <div key={index} className="mb-4">
-                        <h4 className="font-semibold">{project.name}</h4>
-                        <p className="text-gray-600 mb-2">{project.description}</p>
-                        <ul className="list-disc pl-5 text-gray-600 space-y-1">
+                        <h4 className="font-semibold text-gray-800">{project.name}</h4>
+                        <p className="text-gray-700 mb-2">{project.description}</p>
+                        <ul className="list-disc pl-5 text-gray-700 space-y-1">
                           {project.points.map((point, pointIndex) => (
                             point && <li key={pointIndex}>{point}</li>
                           ))}
@@ -1153,15 +1167,15 @@ function Template1() {
               <div>
                 {/* Skills */}
                 {formData.skills.length > 0 && formData.skills[0] && (
-                  <section className="mb-8">
-                    <h3 className="text-sm font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-2 flex items-center">
-                      <Award className="mr-2 text-blue-600" />
+                  <section className="mb-6">
+                    <h3 className="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center">
+                      <Award className="mr-2 text-blue-600" size={18} />
                       SKILLS
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {formData.skills.map((skill, index) => (
                         skill && (
-                          <span key={index} className="bg-blue-100 text-blue-800 px-2 py-1 rounded-lg">
+                          <span key={index} className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-sm">
                             {skill}
                           </span>
                         )
@@ -1172,19 +1186,17 @@ function Template1() {
 
                 {/* Education */}
                 {formData.education.length > 0 && formData.education[0].degree && (
-                  <section className="mb-8">
-                    <h3 className="text-sm font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-2 flex items-center">
-                      <GraduationCap className="mr-2 text-blue-600" size={16} />
+                  <section className="mb-6">
+                    <h3 className="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center">
+                      <GraduationCap className="mr-2 text-blue-600" size={18} />
                       EDUCATION
                     </h3>
                     {formData.education.map((edu, index) => (
                       <div key={index} className="mb-4">
-                        <h4 className="font-semibold">{edu.degree}</h4>
-                        <p className="text-blue-600">{edu.school}</p>
-                        <div className="flex justify-between">
-                          {edu.score && <p className="text-gray-600">CGPA: {edu.score}</p>}
-                          <p className="text-gray-600">{edu.startDate} - {edu.endDate}</p>
-                        </div>
+                        <h4 className="font-semibold text-gray-800">{edu.degree}</h4>
+                        <div className="text-blue-600">{edu.school}</div>
+                        <div className="text-gray-600 text-sm">{edu.startDate} - {edu.endDate}</div>
+                        {edu.score && <div className="text-gray-700">CGPA: {edu.score}</div>}
                       </div>
                     ))}
                   </section>
@@ -1192,35 +1204,33 @@ function Template1() {
 
                 {/* Certifications */}
                 {formData.certifications.length > 0 && formData.certifications[0].name && (
-                  <section className="mb-8">
-                    <h3 className="text-sm font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-2 flex items-center">
-                      <Award className="mr-2 text-blue-600" size={16} />
+                  <section className="mb-6">
+                    <h3 className="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center">
+                      <Award className="mr-2 text-blue-600" size={18} />
                       CERTIFICATIONS
                     </h3>
-                    <ul className="list-disc pl-5 text-gray-600 space-y-1">
-                      {formData.certifications.map((cert, index) => (
-                        <li key={index}>
-                          {cert.name} - {cert.issuer}, {cert.date}
-                        </li>
-                      ))}
-                    </ul>
+                    {formData.certifications.map((cert, index) => (
+                      <div key={index} className="mb-2">
+                        <div className="font-medium text-gray-800">{cert.name}</div>
+                        <div className="text-gray-600 text-sm">{cert.issuer} - {cert.date}</div>
+                      </div>
+                    ))}
                   </section>
                 )}
 
                 {/* Languages */}
                 {formData.languages.length > 0 && formData.languages[0].name && (
                   <section>
-                    <h3 className="text-sm font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-2 flex items-center">
-                      <Languages className="mr-2 text-blue-600" size={16} />
+                    <h3 className="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center">
+                      <Languages className="mr-2 text-blue-600" size={18} />
                       LANGUAGES
                     </h3>
-                    <ul className="text-gray-600 flex gap-4">
-                      {formData.languages.map((lang, index) => (
-                        <li key={index}>
-                          <span className="font-semibold">{lang.name}:</span> {lang.proficiency}
-                        </li>
-                      ))}
-                    </ul>
+                    {formData.languages.map((lang, index) => (
+                      <div key={index} className="mb-2">
+                        <span className="font-medium text-gray-800">{lang.name}</span>
+                        <span className="text-gray-600"> - {lang.proficiency}</span>
+                      </div>
+                    ))}
                   </section>
                 )}
               </div>
@@ -1232,7 +1242,7 @@ function Template1() {
         <div className="flex justify-end gap-4">
           <button
             onClick={() => setIsSaveModalOpen(true)}
-            className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            className="flex items-center gap-2 bg-green- 500 text-white px-4 py-2 rounded hover:bg-green-600"
           >
             <Save size={20} />
             Save Resume
