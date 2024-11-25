@@ -739,7 +739,7 @@ function Template1() {
                   type="text"
                   placeholder="Skill"
                   value={skill}
-                  onChange={(e) => handleInputChange('skills', index, null, e.target.value)}
+                  onChange={(e) => handleInputChange('skills', null, e.target.value)}
                   className="border p-2 rounded flex-1"
                 />
                 <button
