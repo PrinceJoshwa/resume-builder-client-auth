@@ -1155,7 +1155,7 @@ function Template1() {
                 {formData.skills.length > 0 && formData.skills[0] && (
                   <section className="mb-8">
                     <h3 className="text-sm font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-2 flex items-center">
-                      <Award className="mr-2 text-blue-600" size={16} />
+                      <Award className="mr-2 text-blue-600" />
                       SKILLS
                     </h3>
                     <div className="flex flex-wrap gap-2">
