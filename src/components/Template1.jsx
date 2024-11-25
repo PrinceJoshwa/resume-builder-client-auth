@@ -1242,7 +1242,7 @@ function Template1() {
         <div className="flex justify-end gap-4">
           <button
             onClick={() => setIsSaveModalOpen(true)}
-            className="flex items-center gap-2 bg-green- 500 text-white px-4 py-2 rounded hover:bg-green-600"
+            className="flex items-center gap-2 bg-green- 500 text-white px-4 py-2 rounded bg-green-600"
           >
             <Save size={20} />
             Save Resume
