@@ -1350,10 +1350,10 @@ function Template1() {
         data: formData
       }, token);
 
-      navigate('/myresume');
+      setIsSaveModalOpen(false);
+      clearForm();
     } catch (error) {
       console.error('Error saving resume:', error);
-      alert('Failed to save resume. Please try again.');
     }
   };
 
@@ -1362,6 +1362,10 @@ function Template1() {
       const newData = { ...prev };
       if (section === 'personalInfo') {
         newData.personalInfo[field] = value;
+      } else if (section === 'skills') {
+        const newSkills = [...prev.skills];
+        newSkills[index] = value;
+        newData.skills = newSkills;
       } else if (Array.isArray(newData[section])) {
         if (field.includes('.')) {
           const [mainField, subField] = field.split('.');
@@ -1375,6 +1379,7 @@ function Template1() {
       return newData;
     });
   };
+
 
   const addItem = (section, defaultItem = {}) => {
     setFormData(prev => ({
