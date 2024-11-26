@@ -1963,7 +1963,7 @@ function Template1() {
 
                 {/* Education */}
                 {formData.education.length > 0 && formData.education[0].degree && (
-                  <section className="mb-6">
+                  <section>
                     <h3 className="flex items-center text-base font-semibold">
                       <GraduationCap size={16} />
                       EDUCATION
