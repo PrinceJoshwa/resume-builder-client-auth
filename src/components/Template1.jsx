@@ -1851,12 +1851,12 @@ function Template1() {
         </div>
 
       {/* Preview Section */}
-      <div id="resume-preview" className="bg-white p-8 rounded-lg shadow-lg" ref={resumeRef}>
+      <div id="resume-preview" className="bg-white p-8 rounded-lg shadow-lg mb-8" ref={resumeRef}>
           <div className="max-w-[21cm] mx-auto font-sans">
             {/* Header */}
             <header className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-800">{formData.personalInfo.name}</h1>
-              <h2 className="text-lg text-blue-600 ">{formData.personalInfo.title}</h2>
+              <h1 className="text-3xl font-bold text-gray-800 mb-1">{formData.personalInfo.name}</h1>
+              <h2 className="text-lg text-blue-600 mb-3">{formData.personalInfo.title}</h2>
               <div className="flex flex-wrap gap-4 text-sm">
                 {formData.personalInfo.phone && (
                   <div className="flex items-center text-gray-600">
@@ -1892,8 +1892,8 @@ function Template1() {
                 {/* Professional Summary */}
                 {formData.summary && (
                   <section className="mb-6">
-                    <h3 className="flex items-center text-base font-semibold">
-                      <Briefcase className="inline mr-2" size={16} />
+                    <h3 className="flex items-center text-base font-semibold mb-2">
+                      <Briefcase className="inline mr-2 inset-x-0 bottom-0" size={16} />
                       PROFESSIONAL SUMMARY
                     </h3>
                     <p className="text-sm text-gray-700">{formData.summary}</p>
@@ -1908,7 +1908,7 @@ function Template1() {
                       EXPERIENCE
                     </h3>
                     {formData.experience.map((exp, index) => (
-                      <div key={index} className=" text-sm">
+                      <div key={index} className="mb-3 text-sm">
                         <div className="font-medium">{exp.title}</div>
                         <div className="text-gray-600">{exp.company}</div>
                         <div className="text-gray-500 text-xs">{exp.startDate} - {exp.endDate}</div>
@@ -1925,12 +1925,12 @@ function Template1() {
                 {/* Projects */}
                 {formData.projects.length > 0 && formData.projects[0].name && (
                   <section className="mb-6">
-                    <h3 className="flex items-center text-base font-semibold">
+                    <h3 className="flex items-center text-base font-semibold mb-2">
                       <FolderOpen className="inline mr-2" size={16} />
                       PROJECTS
                     </h3>
                     {formData.projects.map((project, index) => (
-                      <div key={index} className="text-sm">
+                      <div key={index} className="mb-3 text-sm">
                         <div className="font-medium">{project.name}</div>
                         <ul className="list-disc ml-4 mt-1 text-gray-700">
                           {project.points.map((point, pointIndex) => point && (
@@ -1947,7 +1947,7 @@ function Template1() {
                 {/* Skills */}
                 {formData.skills.length > 0 && formData.skills[0] && (
                   <section className="mb-6">
-                    <h3 className="flex items-center text-base font-semibold">
+                    <h3 className="flex items-center text-base font-semibold mb-2">
                       <Award className="inline mr-2" size={16} />
                       SKILLS
                     </h3>
@@ -1963,13 +1963,13 @@ function Template1() {
 
                 {/* Education */}
                 {formData.education.length > 0 && formData.education[0].degree && (
-                  <section>
-                    <h3 className="flex items-center text-base font-semibold">
-                      <GraduationCap size={16} />
+                  <section className="mb-6">
+                    <h3 className="flex items-center text-base font-semibold mb-2">
+                      <GraduationCap className="inline mr-2" size={16} />
                       EDUCATION
                     </h3>
                     {formData.education.map((edu, index) => (
-                      <div key={index} className="text-sm">
+                      <div key={index} className="mb-3 text-sm">
                         <div className="font-medium">{edu.degree}</div>
                         <div className="text-gray-600">{edu.school}</div>
                         <div className="text-gray-500 text-xs">{edu.startDate} - {edu.endDate}</div>
@@ -1982,12 +1982,12 @@ function Template1() {
                 {/* Certifications */}
                 {formData.certifications.length > 0 && formData.certifications[0].name && (
                   <section className="mb-6">
-                    <h3 className="flex items-center text-base font-semibold">
+                    <h3 className="flex items-center text-base font-semibold mb-2">
                       <Award className="inline mr-2" size={16} />
                       CERTIFICATIONS
                     </h3>
                     {formData.certifications.map((cert, index) => (
-                      <div key={index} className=" text-sm">
+                      <div key={index} className="mb-2 text-sm">
                         <div className="font-medium">{cert.name}</div>
                         <div className="text-gray-600">{cert.issuer} - {cert.date}</div>
                       </div>
@@ -1999,12 +1999,12 @@ function Template1() {
                 {/* Languages */}
                 {formData.languages.length > 0 && formData.languages[0].name && (
                   <section>
-                    <h3 className="flex items-center text-base font-semibold">
+                    <h3 className="flex items-center text-base font-semibold mb-2">
                       <Languages className="inline mr-2" size={16} />
                       LANGUAGES
                     </h3>
                     {formData.languages.map((lang, index) => (
-                      <div key={index} className=" text-sm">
+                      <div key={index} className="mb-1 text-sm">
                         <span className="font-medium">{lang.name}</span>
                         <span className="text-gray-600"> - {lang.proficiency}</span>
                       </div>
