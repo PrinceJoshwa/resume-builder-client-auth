@@ -1892,11 +1892,11 @@ function Template1() {
                 {/* Professional Summary */}
                 {formData.summary && (
                  <section className="mb-6">
-        <div className="flex items-center">
+                  <div className="flex items-center">
+                  <Briefcase size={16} />
                    <h3 className="text-base font-semibold mr-2">
                      PROFESSIONAL SUMMARY
                    </h3>
-                   <Briefcase size={16} />
                  </div>
                  <p className="text-sm text-gray-700">{formData.summary}</p>
                </section>
