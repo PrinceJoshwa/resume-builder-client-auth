@@ -74,24 +74,24 @@
 //     setFormData(initialFormData);
 //   };
 
-//   const handleSaveResume = async (resumeName) => {
-//     try {
-//       const token = getToken();
-//       if (!token) {
-//         throw new Error('Please login to save resume');
-//       }
+  // const handleSaveResume = async (resumeName) => {
+  //   try {
+  //     const token = getToken();
+  //     if (!token) {
+  //       throw new Error('Please login to save resume');
+  //     }
 
-//       await saveResume({
-//         name: resumeName,
-//         data: formData
-//       }, token);
+  //     await saveResume({
+  //       name: resumeName,
+  //       data: formData
+  //     }, token);
 
-//       setIsSaveModalOpen(false);
-//       clearForm();
-//     } catch (error) {
-//       console.error('Error saving resume:', error);
-//     }
-//   };
+  //     setIsSaveModalOpen(false);
+  //     clearForm();
+  //   } catch (error) {
+  //     console.error('Error saving resume:', error);
+  //   }
+  // };
 
 //   const downloadPDF = async () => {
 //     const element = document.getElementById('resume-preview');
@@ -1304,12 +1304,13 @@ function Template1() {
         data: formData
       }, token);
 
-      navigate('/myresume');
+      setIsSaveModalOpen(false);
+      clearForm();
     } catch (error) {
       console.error('Error saving resume:', error);
-      alert('Failed to save resume. Please try again.');
     }
   };
+
 
   const handleInputChange = (section, index, field, value) => {
     setFormData(prev => {
