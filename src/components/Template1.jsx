@@ -1277,7 +1277,8 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Phone, Mail, Linkedin, Github, MapPin, Briefcase, 
   GraduationCap, Award, FolderOpen, Languages, 
-  Download, Save, BriefcaseBusiness
+  Download, Save, BriefcaseBusiness,
+  GithubIcon
 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -1876,6 +1877,13 @@ function Template1() {
                     <span className="relative -top-2">{formData.personalInfo.linkedin}</span>
                   </div>
                 )}
+                {formData.personalInfo.github && (
+                  <div className="flex items-center text-gray-600">
+                    <Github size={14} className="mr-1 text-blue-600" />
+                    <span className="relative -top-2">{formData.personalInfo.github}</span>
+                  </div>
+                )}
+
                 {formData.personalInfo.location && (
                   <div className="flex items-center text-gray-600">
                     <MapPin size={14} className="mr-1 text-blue-600" />
