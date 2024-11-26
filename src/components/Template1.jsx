@@ -1394,19 +1394,29 @@ function Template1() {
 
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = canvas.width / 2;
-      const imgHeight = canvas.height / 2;
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
       const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
 
       const centerX = (pdfWidth - imgWidth * ratio) / 2;
       const centerY = 0;
 
-      pdf.addImage(imgData, 'PNG', centerX, centerY, imgWidth * ratio, imgHeight * ratio);
+      pdf.addImage(
+        imgData, 
+        'PNG', 
+        0, 
+        0, 
+        imgWidth * ratio, 
+        imgHeight * ratio, 
+        '', 
+        'FAST'
+      );
       pdf.save('resume.pdf');
     } catch (error) {
       console.error('Error generating PDF:', error);
       alert('Failed to download PDF. Please try again.');
     }
+
   };
 
   return (
