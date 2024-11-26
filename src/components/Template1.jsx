@@ -1277,7 +1277,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Phone, Mail, Linkedin, Github, MapPin, Briefcase, 
   GraduationCap, Award, FolderOpen, Languages, 
-  Download, Save 
+  Download, Save, BriefcaseBusiness
 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -1906,7 +1906,7 @@ function Template1() {
                 {formData.experience.length > 0 && formData.experience[0].title && (
                   <section className="mb-6">
                    <div className="flex items-center">
-                   <Briefcase className="mr-2 text-blue-600" size={16} />
+                   <BriefcaseBusiness className="mr-2 text-blue-600" size={16} />
                     <h3 className="text-base font-semibold relative -top-2">
                       EXPERIENCE
                     </h3>
@@ -1953,20 +1953,12 @@ function Template1() {
                 {/* Skills */}
                 {formData.skills.length > 0 && formData.skills[0] && (
                   <section className="mb-6">
-                    <div className="flex items-center">
+                    <div className="flex items-center mb-2">
                     <Award className="mr-2 text-blue-600" size={16} />
                      <h3 className="text-base font-semibold relative -top-2">
                       SKILLS
                      </h3>
-                    </div>
-                    {/* <div className="flex flex-wrap gap-2">
-                      {formData.skills.map((skill, index) => skill && (
-                        <span key={index} className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm flex items-center">
-                          {skill}
-                        </span>
-                      ))}
-                    </div> */}
-                      
+                    </div>                      
                     <div className="flex flex-wrap gap-2">
                       {formData.skills.map((skill, index) => skill && (
                        <div key={index} className="flex items-center bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm">
