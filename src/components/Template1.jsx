@@ -1859,26 +1859,26 @@ function Template1() {
               <h2 className="text-lg text-blue-600 mb-3">{formData.personalInfo.title}</h2>
               <div className="flex flex-wrap gap-4 text-sm">
                 {formData.personalInfo.phone && (
-                  <div className="flex items-center text-gray-600">
-                    <Phone size={14} className="mr-1" />
-                    <span>{formData.personalInfo.phone}</span>
-                  </div>
+                 <div className="flex items-center text-gray-600">
+                 <Phone size={14} className="mr-1 text-blue-600" />
+                 <span className="relative -top-1">{formData.personalInfo.phone}</span>
+               </div>
                 )}
                 {formData.personalInfo.email && (
                   <div className="flex items-center text-gray-600">
-                    <Mail size={14} className="mr-1" />
+                    <Mail size={14} className="mr-1 text-blue-600" />
                     <span>{formData.personalInfo.email}</span>
                   </div>
                 )}
                 {formData.personalInfo.linkedin && (
                   <div className="flex items-center text-gray-600">
-                    <Linkedin size={14} className="mr-1" />
+                    <Linkedin size={14} className="mr-1 text-blue-600" />
                     <span>{formData.personalInfo.linkedin}</span>
                   </div>
                 )}
                 {formData.personalInfo.location && (
                   <div className="flex items-center text-gray-600">
-                    <MapPin size={14} className="mr-1" />
+                    <MapPin size={14} className="mr-1 text-blue-600" />
                     <span>{formData.personalInfo.location}</span>
                   </div>
                 )}
@@ -1893,7 +1893,7 @@ function Template1() {
                 {formData.summary && (
               <section className="mb-6">
                 <div className="flex items-center">
-                  <Briefcase className="mr-2 " size={16} />
+                  <Briefcase className="mr-2 text-blue-600" size={16} />
                   <h3 className="text-base font-semibold relative -top-2">
                     PROFESSIONAL SUMMARY
                   </h3>
@@ -1906,7 +1906,7 @@ function Template1() {
                 {formData.experience.length > 0 && formData.experience[0].title && (
                   <section className="mb-6">
                    <div className="flex items-center">
-                   <Briefcase className="mr-2" size={16} />
+                   <Briefcase className="mr-2 text-blue-600" size={16} />
                     <h3 className="text-base font-semibold relative -top-2">
                       EXPERIENCE
                     </h3>
@@ -1930,7 +1930,7 @@ function Template1() {
                 {formData.projects.length > 0 && formData.projects[0].name && (
                   <section className="mb-6">
                    <div className="flex items-center">
-                      <FolderOpen className="mr-2" size={16} />
+                      <FolderOpen className="mr-2 text-blue-600" size={16} />
                       <h3 className="text-base font-semibold relative -top-2">
                       PROJECTS
                     </h3>
@@ -1954,7 +1954,7 @@ function Template1() {
                 {formData.skills.length > 0 && formData.skills[0] && (
                   <section className="mb-6">
                     <div className="flex items-center">
-                    <Award className="mr-2" size={16} />
+                    <Award className="mr-2 text-blue-600" size={16} />
                      <h3 className="text-base font-semibold relative -top-2">
                       SKILLS
                      </h3>
@@ -1973,7 +1973,7 @@ function Template1() {
                 {formData.education.length > 0 && formData.education[0].degree && (
                   <section className="mb-6">
                    <div className="flex items-center">
-                    <GraduationCap className="mr-2" size={16} />
+                    <GraduationCap className="mr-2 text-blue-600" size={16} />
                     <h3 className="text-base font-semibold relative -top-2">
                       EDUCATION
                     </h3>
@@ -1993,7 +1993,7 @@ function Template1() {
                 {formData.certifications.length > 0 && formData.certifications[0].name && (
                   <section className="mb-6">
                   <div className="flex items-center">
-                    <Award className="mr-2" size={16} />
+                    <Award className="mr-2 text-blue-600" size={16} />
                     <h3 className="text-base font-semibold relative -top-2">
                       CERTIFICATIONS
                     </h3>
