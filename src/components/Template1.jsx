@@ -1959,13 +1959,21 @@ function Template1() {
                       SKILLS
                      </h3>
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                    {/* <div className="flex flex-wrap gap-2">
                       {formData.skills.map((skill, index) => skill && (
-                        <span key={index} className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm flex items-center relative -top-2">
+                        <span key={index} className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm flex items-center">
                           {skill}
                         </span>
                       ))}
-                    </div>
+                    </div> */}
+                      
+                    <div className="flex flex-wrap gap-2">
+                      {formData.skills.map((skill, index) => skill && (
+                       <div key={index} className="flex items-center bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm">
+                         <span className="relative -top-2">{skill}</span>
+                       </div>
+                      ))}
+                   </div>
                   </section>
                 )}
 
