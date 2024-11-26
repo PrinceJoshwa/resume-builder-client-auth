@@ -1965,7 +1965,7 @@ function Template1() {
                 {formData.education.length > 0 && formData.education[0].degree && (
                   <section className="mb-6">
                     <h3 className="flex items-center text-base font-semibold">
-                      <GraduationCap className="inline mr-2" size={16} />
+                      <GraduationCap size={16} />
                       EDUCATION
                     </h3>
                     {formData.education.map((edu, index) => (
