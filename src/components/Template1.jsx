@@ -1861,25 +1861,25 @@ function Template1() {
                 {formData.personalInfo.phone && (
                  <div className="flex items-center text-gray-600">
                  <Phone size={14} className="mr-1 text-blue-600" />
-                 <span className="relative -top-1">{formData.personalInfo.phone}</span>
+                 <span className="relative -top-2">{formData.personalInfo.phone}</span>
                </div>
                 )}
                 {formData.personalInfo.email && (
                   <div className="flex items-center text-gray-600">
                     <Mail size={14} className="mr-1 text-blue-600" />
-                    <span>{formData.personalInfo.email}</span>
+                    <span className="relative -top-2">{formData.personalInfo.email}</span>
                   </div>
                 )}
                 {formData.personalInfo.linkedin && (
                   <div className="flex items-center text-gray-600">
                     <Linkedin size={14} className="mr-1 text-blue-600" />
-                    <span>{formData.personalInfo.linkedin}</span>
+                    <span className="relative -top-2">{formData.personalInfo.linkedin}</span>
                   </div>
                 )}
                 {formData.personalInfo.location && (
                   <div className="flex items-center text-gray-600">
                     <MapPin size={14} className="mr-1 text-blue-600" />
-                    <span>{formData.personalInfo.location}</span>
+                    <span className="relative -top-2">{formData.personalInfo.location}</span>
                   </div>
                 )}
               </div>
@@ -1961,7 +1961,7 @@ function Template1() {
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {formData.skills.map((skill, index) => skill && (
-                        <span key={index} className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm flex items-center">
+                        <span key={index} className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm flex items-center relative -top-2">
                           {skill}
                         </span>
                       ))}
