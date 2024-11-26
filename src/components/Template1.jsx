@@ -1950,8 +1950,7 @@ function Template1() {
                 )}
               </div>
 
-              {/* <div className="col-span-5"> */}
-              <div>
+              <div className="col-span-5">
                 {/* Skills */}
                 {formData.skills.length > 0 && formData.skills[0] && (
                   <section className="mb-6">
