@@ -1891,7 +1891,7 @@ function Template1() {
               <div>
                 {/* Professional Summary */}
                 {formData.summary && (
-                <section className="mb-6">
+              <section className="mb-6">
                 <div className="flex items-center">
                   <Briefcase className="mr-2 " size={16} />
                   <h3 className="text-base font-semibold relative -top-2">
@@ -1905,10 +1905,12 @@ function Template1() {
                 {/* Experience */}
                 {formData.experience.length > 0 && formData.experience[0].title && (
                   <section className="mb-6">
-                    <h3 className="flex items-center text-base font-semibold mb-2">
-                      <Briefcase className="inline mr-2" size={16} />
+                   <div className="flex items-center">
+                   <Briefcase className="mr-2" size={16} />
+                    <h3 className="text-base font-semibold relative -top-2">
                       EXPERIENCE
                     </h3>
+                   </div>
                     {formData.experience.map((exp, index) => (
                       <div key={index} className="mb-3 text-sm">
                         <div className="font-medium">{exp.title}</div>
@@ -1927,10 +1929,12 @@ function Template1() {
                 {/* Projects */}
                 {formData.projects.length > 0 && formData.projects[0].name && (
                   <section className="mb-6">
-                    <h3 className="flex items-center text-base font-semibold mb-2">
-                      <FolderOpen className="inline mr-2" size={16} />
+                   <div className="flex items-center">
+                      <FolderOpen className="mr-2" size={16} />
+                      <h3 className="text-base font-semibold relative -top-2">
                       PROJECTS
                     </h3>
+                   </div>
                     {formData.projects.map((project, index) => (
                       <div key={index} className="mb-3 text-sm">
                         <div className="font-medium">{project.name}</div>
@@ -1949,10 +1953,12 @@ function Template1() {
                 {/* Skills */}
                 {formData.skills.length > 0 && formData.skills[0] && (
                   <section className="mb-6">
-                    <h3 className="flex items-center text-base font-semibold mb-2">
-                      <Award className="inline mr-2" size={16} />
+                    <div className="flex items-center">
+                    <Award className="mr-2" size={16} />
+                     <h3 className="text-base font-semibold relative -top-2">
                       SKILLS
-                    </h3>
+                     </h3>
+                    </div>
                     <div className="flex flex-wrap gap-2">
                       {formData.skills.map((skill, index) => skill && (
                         <span key={index} className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm flex items-center">
@@ -1966,10 +1972,12 @@ function Template1() {
                 {/* Education */}
                 {formData.education.length > 0 && formData.education[0].degree && (
                   <section className="mb-6">
-                    <h3 className="flex items-center text-base font-semibold mb-2">
-                      <GraduationCap className="inline mr-2" size={16} />
+                   <div className="flex items-center">
+                    <GraduationCap className="mr-2" size={16} />
+                    <h3 className="text-base font-semibold relative -top-2">
                       EDUCATION
                     </h3>
+                   </div>
                     {formData.education.map((edu, index) => (
                       <div key={index} className="mb-3 text-sm">
                         <div className="font-medium">{edu.degree}</div>
@@ -1984,10 +1992,12 @@ function Template1() {
                 {/* Certifications */}
                 {formData.certifications.length > 0 && formData.certifications[0].name && (
                   <section className="mb-6">
-                    <h3 className="flex items-center text-base font-semibold mb-2">
-                      <Award className="inline mr-2" size={16} />
+                  <div className="flex items-center">
+                    <Award className="mr-2" size={16} />
+                    <h3 className="text-base font-semibold relative -top-2">
                       CERTIFICATIONS
                     </h3>
+                  </div>  
                     {formData.certifications.map((cert, index) => (
                       <div key={index} className="mb-2 text-sm">
                         <div className="font-medium">{cert.name}</div>
@@ -2001,10 +2011,12 @@ function Template1() {
                 {/* Languages */}
                 {formData.languages.length > 0 && formData.languages[0].name && (
                   <section>
-                    <h3 className="flex items-center text-base font-semibold mb-2">
-                      <Languages className="inline mr-2" size={16} />
+                    <div className="flex items-center">
+                      <Languages className="mr-2 text-blue-600" size={16} />
+                    <h3 className="text-base font-semibold relative -top-2">
                       LANGUAGES
                     </h3>
+                    </div>
                     {formData.languages.map((lang, index) => (
                       <div key={index} className="mb-1 text-sm">
                         <span className="font-medium">{lang.name}</span>
