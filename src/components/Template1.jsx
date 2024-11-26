@@ -461,11 +461,11 @@
 //             </button>
 //           </div>
 
-//           <SaveResumeModal
-//             isOpen={isSaveModalOpen}
-//             onClose={() => setIsSaveModalOpen(false)}
-//             onSave={handleSaveResume}
-//           />
+          // <SaveResumeModal
+          //   isOpen={isSaveModalOpen}
+          //   onClose={() => setIsSaveModalOpen(false)}
+          //   onSave={handleSaveResume}
+          // />
 //         </div>
 //       </div>
 //     </div>
@@ -1218,6 +1218,11 @@ function Template1() {
             Download PDF
           </button>
         </div>
+        <SaveResumeModal
+            isOpen={isSaveModalOpen}
+            onClose={() => setIsSaveModalOpen(false)}
+            onSave={handleSaveResume}
+        />
       </div>
     </div>
   );
