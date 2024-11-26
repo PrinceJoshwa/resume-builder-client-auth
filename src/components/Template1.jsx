@@ -473,8 +473,7 @@
 // }
 
 
-import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { 
   Phone, 
   Mail, 
@@ -491,9 +490,6 @@ import {
 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { saveResume } from '../api';
-import { isAuthenticated, getToken } from '../utils/auth';
-import SaveResumeModal from './SaveResumeModal';
 
 const initialFormData = {
   personalInfo: {
@@ -532,11 +528,6 @@ const initialFormData = {
     issuer: '',
     date: ''
   }],
-  internships: [{
-    company: '',
-    duration: '',
-    description: ''
-  }],
   languages: [{
     name: '',
     proficiency: ''
@@ -544,16 +535,8 @@ const initialFormData = {
 };
 
 function Template1() {
-  const navigate = useNavigate();
-  const resumeRef = useRef(null);
-  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
-
-  useEffect(() => {
-    if (!isAuthenticated()) {
-      navigate('/login');
-    }
-  }, [navigate]);
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
 
   const handleInputChange = (section, index, field, value) => {
     setFormData(prev => {
@@ -561,7 +544,7 @@ function Template1() {
       if (section === 'personalInfo') {
         newData.personalInfo[field] = value;
       } else if (section === 'skills') {
-        const newSkills = [...newData.skills];
+        const newSkills = [...prev.skills];
         newSkills[index] = value;
         newData.skills = newSkills;
       } else if (Array.isArray(newData[section])) {
@@ -616,28 +599,9 @@ function Template1() {
     });
   };
 
-  const handleSaveResume = async (resumeName) => {
-    try {
-      const token = getToken();
-      if (!token) {
-        throw new Error('Please login to save resume');
-      }
-
-      await saveResume({
-        name: resumeName,
-        data: formData
-      }, token);
-
-      navigate('/myresume');
-    } catch (error) {
-      console.error('Error saving resume:', error);
-      alert('Failed to save resume. Please try again.');
-    }
-  };
-
   const downloadPDF = async () => {
     try {
-      const element = resumeRef.current;
+      const element = document.getElementById('resume-preview');
       if (!element) return;
 
       const canvas = await html2canvas(element, {
@@ -655,15 +619,22 @@ function Template1() {
         compress: true
       });
 
-      const pdfWidth = 210;
-      const pdfHeight = 297;
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
       const imgWidth = canvas.width;
       const imgHeight = canvas.height;
       const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-      const x = (pdfWidth - imgWidth * ratio) / 2;
-      const y = 0;
 
-      pdf.addImage(imgData, 'PNG', x, y, imgWidth * ratio, imgHeight * ratio, '', 'FAST');
+      pdf.addImage(
+        imgData, 
+        'PNG', 
+        0, 
+        0, 
+        imgWidth * ratio, 
+        imgHeight * ratio, 
+        '', 
+        'FAST'
+      );
       pdf.save('resume.pdf');
     } catch (error) {
       console.error('Error generating PDF:', error);
@@ -1066,75 +1037,70 @@ function Template1() {
         </div>
 
         {/* Preview Section */}
-        <div className="bg-white p-8 rounded-lg shadow-lg mb-8" ref={resumeRef}>
-          <div className="max-w-[21cm] mx-auto font-sans text-[11pt] leading-relaxed">
+        <div id="resume-preview" className="bg-white p-8 rounded-lg shadow-lg mb-8">
+          <div className="max-w-[21cm] mx-auto font-sans">
             {/* Header */}
-            <header className="mb-6 pb-6 border-b-2 border-blue-600">
-              <h1 className="text-4xl font-bold text-gray-800 mb-2">{formData.personalInfo.name}</h1>
-              <h2 className="text-xl text-blue-600 mb-4">{formData.personalInfo.title}</h2>
-              <div className="flex flex-wrap gap-4">
+            <header className="mb-6">
+              <h1 className="text-3xl font-bold text-gray-800 mb-1">{formData.personalInfo.name}</h1>
+              <h2 className="text-lg text-blue-600 mb-3">{formData.personalInfo.title}</h2>
+              <div className="flex flex-wrap gap-4 text-sm">
                 {formData.personalInfo.phone && (
-                  <a href={`tel:${formData.personalInfo.phone}`} className="flex items-center text-gray-600 hover:text-blue-600">
-                    <Phone size={16} className="mr-2" />
+                  <div className="flex items-center text-gray-600">
+                    <Phone size={14} className="mr-1" />
                     <span>{formData.personalInfo.phone}</span>
-                  </a>
+                  </div>
                 )}
                 {formData.personalInfo.email && (
-                  <a href={`mailto:${formData.personalInfo.email}`} className="flex items-center text-gray-600 hover:text-blue-600">
-                    <Mail size={16} className="mr-2" />
+                  <div className="flex items-center text-gray-600">
+                    <Mail size={14} className="mr-1" />
                     <span>{formData.personalInfo.email}</span>
-                  </a>
+                  </div>
                 )}
                 {formData.personalInfo.linkedin && (
-                  <a href={formData.personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-600 hover:text-blue-600">
-                    <Linkedin size={16} className="mr-2" />
-                    <span>{formData.personalInfo.linkedin.split('/').pop()}</span>
-                  </a>
-                )}
-                {formData.personalInfo.github && (
-                  <a href={formData.personalInfo.github} target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-600 hover:text-blue-600">
-                    <Github size={16} className="mr-2" />
-                    <span>{formData.personalInfo.github.split('/').pop()}</span>
-                  </a>
+                  <div className="flex items-center text-gray-600">
+                    <Linkedin size={14} className="mr-1" />
+                    <span>{formData.personalInfo.linkedin}</span>
+                  </div>
                 )}
                 {formData.personalInfo.location && (
-                  <span className="flex items-center text-gray-600">
-                    <MapPin size={16} className="mr-2" />
+                  <div className="flex items-center text-gray-600">
+                    <MapPin size={14} className="mr-1" />
                     <span>{formData.personalInfo.location}</span>
-                  </span>
+                  </div>
                 )}
               </div>
             </header>
 
-            <div className="grid grid-cols-3 gap-6">
-              <div className="col-span-2">
+            <div className="border-t border-gray-300 my-4"></div>
+
+            <div className="grid grid-cols-2 gap-6">
+              <div>
                 {/* Professional Summary */}
                 {formData.summary && (
                   <section className="mb-6">
-                    <h3 className="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center">
-                      <Briefcase className="mr-2 text-blue-600" size={18} />
+                    <h3 className="flex items-center text-base font-semibold mb-2">
+                      <Briefcase className="inline mr-2" size={16} />
                       PROFESSIONAL SUMMARY
                     </h3>
-                    <p className="text-gray-700 text-justify">{formData.summary}</p>
+                    <p className="text-sm text-gray-700">{formData.summary}</p>
                   </section>
                 )}
 
                 {/* Experience */}
                 {formData.experience.length > 0 && formData.experience[0].title && (
                   <section className="mb-6">
-                    <h3 className="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center">
-                      <Briefcase className="mr-2 text-blue-600" size={18} />
+                    <h3 className="flex items-center text-base font-semibold mb-2">
+                      <Briefcase className="inline mr-2" size={16} />
                       EXPERIENCE
                     </h3>
                     {formData.experience.map((exp, index) => (
-                      <div key={index} className="mb-4">
-                        <h4 className="font-semibold text-gray-800">{exp.title}</h4>
-                        <div className="text-blue-600 mb-1">{exp.company}</div>
-                        <div className="text-gray-600 text-sm mb-2">{exp.startDate} - {exp.endDate}</div>
-                        <p className="text-gray-700 mb-2">{exp.description}</p>
-                        <ul className="list-disc pl-5 text-gray-700 space-y-1">
-                          {exp.points.map((point, pointIndex) => (
-                            point && <li key={pointIndex}>{point}</li>
+                      <div key={index} className="mb-3 text-sm">
+                        <div className="font-medium">{exp.title}</div>
+                        <div className="text-gray-600">{exp.company}</div>
+                        <div className="text-gray-500 text-xs">{exp.startDate} - {exp.endDate}</div>
+                        <ul className="list-disc ml-4 mt-1 text-gray-700">
+                          {exp.points.map((point, i) => point && (
+                            <li key={i}>{point}</li>
                           ))}
                         </ul>
                       </div>
@@ -1145,17 +1111,16 @@ function Template1() {
                 {/* Projects */}
                 {formData.projects.length > 0 && formData.projects[0].name && (
                   <section className="mb-6">
-                    <h3 className="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center">
-                      <FolderOpen className="mr-2 text-blue-600" size={18} />
+                    <h3 className="flex items-center text-base font-semibold mb-2">
+                      <FolderOpen className="inline mr-2" size={16} />
                       PROJECTS
                     </h3>
                     {formData.projects.map((project, index) => (
-                      <div key={index} className="mb-4">
-                        <h4 className="font-semibold text-gray-800">{project.name}</h4>
-                        <p className="text-gray-700 mb-2">{project.description}</p>
-                        <ul className="list-disc pl-5 text-gray-700 space-y-1">
-                          {project.points.map((point, pointIndex) => (
-                            point && <li key={pointIndex}>{point}</li>
+                      <div key={index} className="mb-3 text-sm">
+                        <div className="font-medium">{project.name}</div>
+                        <ul className="list-disc ml-4 mt-1 text-gray-700">
+                          {project.points.map((point, i) => point && (
+                            <li key={i}>{point}</li>
                           ))}
                         </ul>
                       </div>
@@ -1168,17 +1133,15 @@ function Template1() {
                 {/* Skills */}
                 {formData.skills.length > 0 && formData.skills[0] && (
                   <section className="mb-6">
-                    <h3 className="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center">
-                      <Award className="mr-2 text-blue-600" size={18} />
+                    <h3 className="flex items-center text-base font-semibold mb-2">
+                      <Award className="inline mr-2" size={16} />
                       SKILLS
                     </h3>
                     <div className="flex flex-wrap gap-2">
-                      {formData.skills.map((skill, index) => (
-                        skill && (
-                          <span key={index} className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-sm">
-                            {skill}
-                          </span>
-                        )
+                      {formData.skills.map((skill, index) => skill && (
+                        <span key={index} className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm flex items-center">
+                          {skill}
+                        </span>
                       ))}
                     </div>
                   </section>
@@ -1187,16 +1150,16 @@ function Template1() {
                 {/* Education */}
                 {formData.education.length > 0 && formData.education[0].degree && (
                   <section className="mb-6">
-                    <h3 className="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center">
-                      <GraduationCap className="mr-2 text-blue-600" size={18} />
+                    <h3 className="flex items-center text-base font-semibold mb-2">
+                      <GraduationCap className="inline mr-2" size={16} />
                       EDUCATION
                     </h3>
                     {formData.education.map((edu, index) => (
-                      <div key={index} className="mb-4">
-                        <h4 className="font-semibold text-gray-800">{edu.degree}</h4>
-                        <div className="text-blue-600">{edu.school}</div>
-                        <div className="text-gray-600 text-sm">{edu.startDate} - {edu.endDate}</div>
-                        {edu.score && <div className="text-gray-700">CGPA: {edu.score}</div>}
+                      <div key={index} className="mb-3 text-sm">
+                        <div className="font-medium">{edu.degree}</div>
+                        <div className="text-gray-600">{edu.school}</div>
+                        <div className="text-gray-500 text-xs">{edu.startDate} - {edu.endDate}</div>
+                        {edu.score && <div className="text-gray-600">CGPA: {edu.score}</div>}
                       </div>
                     ))}
                   </section>
@@ -1205,14 +1168,14 @@ function Template1() {
                 {/* Certifications */}
                 {formData.certifications.length > 0 && formData.certifications[0].name && (
                   <section className="mb-6">
-                    <h3 className="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center">
-                      <Award className="mr-2 text-blue-600" size={18} />
+                    <h3 className="flex items-center text-base font-semibold mb-2">
+                      <Award className="inline mr-2" size={16} />
                       CERTIFICATIONS
                     </h3>
                     {formData.certifications.map((cert, index) => (
-                      <div key={index} className="mb-2">
-                        <div className="font-medium text-gray-800">{cert.name}</div>
-                        <div className="text-gray-600 text-sm">{cert.issuer} - {cert.date}</div>
+                      <div key={index} className="mb-2 text-sm">
+                        <div className="font-medium">{cert.name}</div>
+                        <div className="text-gray-600">{cert.issuer} - {cert.date}</div>
                       </div>
                     ))}
                   </section>
@@ -1221,13 +1184,13 @@ function Template1() {
                 {/* Languages */}
                 {formData.languages.length > 0 && formData.languages[0].name && (
                   <section>
-                    <h3 className="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center">
-                      <Languages className="mr-2 text-blue-600" size={18} />
+                    <h3 className="flex items-center text-base font-semibold mb-2">
+                      <Languages className="inline mr-2" size={16} />
                       LANGUAGES
                     </h3>
                     {formData.languages.map((lang, index) => (
-                      <div key={index} className="mb-2">
-                        <span className="font-medium text-gray-800">{lang.name}</span>
+                      <div key={index} className="mb-1 text-sm">
+                        <span className="font-medium">{lang.name}</span>
                         <span className="text-gray-600"> - {lang.proficiency}</span>
                       </div>
                     ))}
@@ -1242,7 +1205,7 @@ function Template1() {
         <div className="flex justify-end gap-4">
           <button
             onClick={() => setIsSaveModalOpen(true)}
-            className="flex items-center gap-2 bg-green- 500 text-white px-4 py-2 rounded bg-green-600"
+            className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
           >
             <Save size={20} />
             Save Resume
@@ -1255,15 +1218,6 @@ function Template1() {
             Download PDF
           </button>
         </div>
-
-        {/* Save Modal */}
-        {isSaveModalOpen && (
-          <SaveResumeModal
-            isOpen={isSaveModalOpen}
-            onClose={() => setIsSaveModalOpen(false)}
-            onSave={handleSaveResume}
-          />
-        )}
       </div>
     </div>
   );
