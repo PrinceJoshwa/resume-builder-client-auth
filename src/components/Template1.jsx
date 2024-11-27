@@ -1825,7 +1825,7 @@ function Template1() {
           {/* Internship */}
           <section className="mb-6">
             <h3 className="text-lg font-semibold mb-4">Internship</h3>
-            {formData.experience.map((exp, index) => (
+            {formData.internships.map((exp, index) => (
               <div key={index} className="border p-4 rounded mb-4">
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <input
