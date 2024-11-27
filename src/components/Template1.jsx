@@ -1865,7 +1865,7 @@ function Template1() {
                     className="border p-2 rounded w-full h-24"
                   />
                 </div>
-                {exp.points.map((point, pointIndex) => (
+                {int.points.map((point, pointIndex) => (
                   <div key={pointIndex} className="flex gap-2 mb-2">
                     <input
                       type="text"
