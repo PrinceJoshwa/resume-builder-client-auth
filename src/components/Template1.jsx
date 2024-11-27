@@ -1825,43 +1825,43 @@ function Template1() {
           {/* Internship */}
           <section className="mb-6">
             <h3 className="text-lg font-semibold mb-4">Internship</h3>
-            {formData.internships.map((exp, index) => (
+            {formData.internships.map((int, index) => (
               <div key={index} className="border p-4 rounded mb-4">
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <input
                     type="text"
                     placeholder="Title"
-                    value={exp.title}
-                    onChange={(e) => handleInputChange('experience', index, 'title', e.target.value)}
+                    value={int.title}
+                    onChange={(e) => handleInputChange('internships', index, 'title', e.target.value)}
                     className="border p-2 rounded"
                   />
                   <input
                     type="text"
                     placeholder="Company"
-                    value={exp.company}
-                    onChange={(e) => handleInputChange('experience', index, 'company', e.target.value)}
+                    value={int.company}
+                    onChange={(e) => handleInputChange('internships', index, 'company', e.target.value)}
                     className="border p-2 rounded"
                   />
                   <input
                     type="text"
                     placeholder="Start Date"
-                    value={exp.startDate}
-                    onChange={(e) => handleInputChange('experience', index, 'startDate', e.target.value)}
+                    value={int.startDate}
+                    onChange={(e) => handleInputChange('internships', index, 'startDate', e.target.value)}
                     className="border p-2 rounded"
                   />
                   <input
                     type="text"
                     placeholder="End Date"
-                    value={exp.endDate}
-                    onChange={(e) => handleInputChange('experience', index, 'endDate', e.target.value)}
+                    value={int.endDate}
+                    onChange={(e) => handleInputChange('internships', index, 'endDate', e.target.value)}
                     className="border p-2 rounded"
                   />
                 </div>
                 <div className="mb-4">
                   <textarea
                     placeholder="Intern Description"
-                    value={exp.description}
-                    onChange={(e) => handleInputChange('experience', index, 'description', e.target.value)}
+                    value={int.description}
+                    onChange={(e) => handleInputChange('internships', index, 'description', e.target.value)}
                     className="border p-2 rounded w-full h-24"
                   />
                 </div>
@@ -1871,11 +1871,11 @@ function Template1() {
                       type="text"
                       placeholder="Achievement/Responsibility"
                       value={point}
-                      onChange={(e) => handleListItemChange('experience', index, 'points', pointIndex, e.target.value)}
+                      onChange={(e) => handleListItemChange('internships', index, 'points', pointIndex, e.target.value)}
                       className="border p-2 rounded flex-1"
                     />
                     <button
-                      onClick={() => removeListItem('experience', index, 'points', pointIndex)}
+                      onClick={() => removeListItem('internships', index, 'points', pointIndex)}
                       className="bg-red-500 text-white px-4 rounded hover:bg-red-600"
                     >
                       Remove
@@ -1884,13 +1884,13 @@ function Template1() {
                 ))}
                 <div className="flex justify-between mt-4">
                   <button
-                    onClick={() => addListItem('experience', index, 'points')}
+                    onClick={() => addListItem('internships', index, 'points')}
                     className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
                   >
                     Add Point
                   </button>
                   <button
-                    onClick={() => removeItem('experience', index)}
+                    onClick={() => removeItem('internships', index)}
                     className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                   >
                     Remove Internship
@@ -1899,7 +1899,7 @@ function Template1() {
               </div>
             ))}
             <button
-              onClick={() => addItem('experience', {
+              onClick={() => addItem('internships', {
                 title: '',
                 company: '',
                 startDate: '',
@@ -2123,13 +2123,13 @@ function Template1() {
                       Internship
                     </h3>
                    </div>
-                    {formData.internships.map((exp, index) => (
+                    {formData.internships.map((int, index) => (
                       <div key={index} className="mb-3 text-sm">
-                        <div className="font-medium">{exp.title}</div>
-                        <div className="text-gray-600">{exp.company}</div>
-                        <div className="text-gray-500 text-xs">{exp.startDate} - {exp.endDate}</div>
+                        <div className="font-medium">{int.title}</div>
+                        <div className="text-gray-600">{int.company}</div>
+                        <div className="text-gray-500 text-xs">{int.startDate} - {int.endDate}</div>
                         <ul className="list-disc ml-4 mt-1 text-gray-700">
-                          {exp.points.map((point, pointIndex) => point && (
+                          {int.points.map((point, pointIndex) => point && (
                             <li key={pointIndex}>{point}</li>
                           ))}
                         </ul>
