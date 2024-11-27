@@ -2022,7 +2022,7 @@ function Template1() {
                         <div className="font-medium">{exp.title}</div>
                         <div className="text-gray-600">{exp.company}</div>
                         <div className="text-gray-500 text-xs">{exp.startDate} - {exp.endDate}</div>
-                        <p className="text-gray-600 my-1">{exp.description}</p>
+                        <div className="text-gray-600 my-1">{exp.description}</div>
                         <ul className="list-disc ml-4 mt-1 text-gray-700">
                           {exp.points.map((point, pointIndex) => point && (
                             <li key={pointIndex}>{point}</li>
@@ -2045,7 +2045,7 @@ function Template1() {
                     {formData.projects.map((project, index) => (
                       <div key={index} className="mb-3 text-sm">
                         <div className="font-medium">{project.name}</div>
-                        <p className="text-gray-600 my-1">{exp.description}</p>
+                        <div className="text-gray-600 my-1">{project.description}</div>
                         <ul className="list-disc ml-4 mt-1 text-gray-700">
                           {project.points.map((point, pointIndex) => point && (
                             <li key={pointIndex}>{point}</li>
@@ -2130,7 +2130,7 @@ function Template1() {
                         <div className="font-medium">{int.title}</div>
                         <div className="text-gray-600">{int.company}</div>
                         <div className="text-gray-500 text-xs">{int.startDate} - {int.endDate}</div>
-                        <p className="text-gray-600 my-1">{int.description}</p>
+                        <div className="text-gray-600 my-1">{int.description}</div>
                         <ul className="list-disc ml-4 mt-1 text-gray-700">
                           {int.points.map((point, pointIndex) => point && (
                             <li key={pointIndex}>{point}</li>
