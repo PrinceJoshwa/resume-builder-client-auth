@@ -1277,7 +1277,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Phone, Mail, Linkedin, Github, MapPin, Briefcase, 
   GraduationCap, Award, FolderOpen, Languages, 
-  Download, Save, BriefcaseBusiness
+  Download, Save, BriefcaseBusiness, NotebookText
 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -2120,7 +2120,7 @@ function Template1() {
                 {formData.internships.length > 0 && formData.internships[0].title && (
                   <section className="mb-6">
                    <div className="flex items-center">
-                   <BriefcaseBusiness className="mr-2 text-blue-600" size={16} />
+                   <NotebookText className="mr-2 text-blue-600" size={16} />
                     <h3 className="text-base font-semibold relative -top-2">
                       Internship
                     </h3>
