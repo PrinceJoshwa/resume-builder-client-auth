@@ -1277,8 +1277,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Phone, Mail, Linkedin, Github, MapPin, Briefcase, 
   GraduationCap, Award, FolderOpen, Languages, 
-  Download, Save, BriefcaseBusiness,
-  GithubIcon
+  Download, Save, BriefcaseBusiness
 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -1326,6 +1325,14 @@ function Template1() {
       name: '',
       issuer: '',
       date: ''
+    }],
+    internships: [{
+      title: '', 
+      company: '',
+      startDate: '',
+      endDate: '',
+      description: '',
+      points: ['']
     }],
     languages: [{
       name: '',
@@ -1815,6 +1822,97 @@ function Template1() {
             </button>
           </section>
 
+          {/* Internship */}
+          <section className="mb-6">
+            <h3 className="text-lg font-semibold mb-4">Internship</h3>
+            {formData.experience.map((exp, index) => (
+              <div key={index} className="border p-4 rounded mb-4">
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <input
+                    type="text"
+                    placeholder="Title"
+                    value={exp.title}
+                    onChange={(e) => handleInputChange('experience', index, 'title', e.target.value)}
+                    className="border p-2 rounded"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Company"
+                    value={exp.company}
+                    onChange={(e) => handleInputChange('experience', index, 'company', e.target.value)}
+                    className="border p-2 rounded"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Start Date"
+                    value={exp.startDate}
+                    onChange={(e) => handleInputChange('experience', index, 'startDate', e.target.value)}
+                    className="border p-2 rounded"
+                  />
+                  <input
+                    type="text"
+                    placeholder="End Date"
+                    value={exp.endDate}
+                    onChange={(e) => handleInputChange('experience', index, 'endDate', e.target.value)}
+                    className="border p-2 rounded"
+                  />
+                </div>
+                <div className="mb-4">
+                  <textarea
+                    placeholder="Intern Description"
+                    value={exp.description}
+                    onChange={(e) => handleInputChange('experience', index, 'description', e.target.value)}
+                    className="border p-2 rounded w-full h-24"
+                  />
+                </div>
+                {exp.points.map((point, pointIndex) => (
+                  <div key={pointIndex} className="flex gap-2 mb-2">
+                    <input
+                      type="text"
+                      placeholder="Achievement/Responsibility"
+                      value={point}
+                      onChange={(e) => handleListItemChange('experience', index, 'points', pointIndex, e.target.value)}
+                      className="border p-2 rounded flex-1"
+                    />
+                    <button
+                      onClick={() => removeListItem('experience', index, 'points', pointIndex)}
+                      className="bg-red-500 text-white px-4 rounded hover:bg-red-600"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+                <div className="flex justify-between mt-4">
+                  <button
+                    onClick={() => addListItem('experience', index, 'points')}
+                    className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                  >
+                    Add Point
+                  </button>
+                  <button
+                    onClick={() => removeItem('experience', index)}
+                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                  >
+                    Remove Internship
+                  </button>
+                </div>
+              </div>
+            ))}
+            <button
+              onClick={() => addItem('experience', {
+                title: '',
+                company: '',
+                startDate: '',
+                endDate: '',
+                description: '',
+                points: ['']
+              })}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Add Internship
+            </button>
+          </section>
+
           {/* Languages */}
           <section className="mb-6">
             <h3 className="text-lg font-semibold mb-4">Languages</h3>
@@ -2012,6 +2110,30 @@ function Template1() {
                         <div className="text-gray-600">{cert.issuer} - {cert.date}</div>
                       </div>
 
+                    ))}
+                  </section>
+                )}
+
+                {/* Internship */}
+                {formData.internships.length > 0 && formData.internships[0].title && (
+                  <section className="mb-6">
+                   <div className="flex items-center">
+                   <BriefcaseBusiness className="mr-2 text-blue-600" size={16} />
+                    <h3 className="text-base font-semibold relative -top-2">
+                      Internship
+                    </h3>
+                   </div>
+                    {formData.internships.map((exp, index) => (
+                      <div key={index} className="mb-3 text-sm">
+                        <div className="font-medium">{exp.title}</div>
+                        <div className="text-gray-600">{exp.company}</div>
+                        <div className="text-gray-500 text-xs">{exp.startDate} - {exp.endDate}</div>
+                        <ul className="list-disc ml-4 mt-1 text-gray-700">
+                          {exp.points.map((point, pointIndex) => point && (
+                            <li key={pointIndex}>{point}</li>
+                          ))}
+                        </ul>
+                      </div>
                     ))}
                   </section>
                 )}
