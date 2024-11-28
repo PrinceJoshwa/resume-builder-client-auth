@@ -1464,7 +1464,7 @@ function Template1() {
 
   return (
     <div className="min-h-screen bg-gray-100 py-8">
-      <div className="max-w-[21cm] mx-auto">
+      <div className="max-w-[22cm] mx-auto">
         {/* Form Section */}
         <div className="bg-white p-8 rounded-lg shadow-lg mb-8">
           <h2 className="text-2xl font-bold mb-6">Resume Information</h2>
@@ -1951,7 +1951,7 @@ function Template1() {
 
       {/* Preview Section */}
       <div id="resume-preview" className="bg-white p-8 rounded-lg shadow-lg mb-8" ref={resumeRef}>
-          <div className="max-w-[21cm] mx-auto font-sans">
+          <div className="max-w-[24cm] mx-auto font-sans">
             {/* Header */}
             <header className="mb-6">
               <h1 className="text-3xl font-bold text-gray-800 mb-1">{formData.personalInfo.name}</h1>
